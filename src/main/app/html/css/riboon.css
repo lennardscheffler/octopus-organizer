@@ -1,0 +1,58 @@
+.ribbon {
+    font-size: 9pt;    
+    background-color: var(--chrome-medium);    
+    padding-top: 5px;    
+}
+
+.ribbon section {
+    border-right: solid 1px #ddd;    
+}
+
+.ribbon section .col-auto {
+    padding: 0;
+}
+
+.ribbon section .label {    
+    text-align: center;
+    padding: 5px;
+}
+
+.ribbon .rb-btn {
+    padding: 7px 15px;
+    cursor: default;    
+    transition: 0.3s;
+    margin: 0 3px;
+    border-radius: 2px;
+}
+
+.ribbon .rb-btn.blind {
+    visibility: hidden;
+}
+
+.ribbon .rb-btn.active {
+    background-color: #ccc;
+}
+
+.ribbon .rb-btn:hover {
+    background-color: var(--list-low);
+}
+
+.ribbon .rb-btn:active {
+    background-color: var(--list-medium);
+}
+
+.ribbon .rb-btn.lg i {
+    font-size: 20px;
+    text-align: center;
+    display: block;
+    margin: 10px;
+}
+
+.ribbon .rb-btn.sm {
+    padding: 3.5px 10px;
+    text-align: left;
+}
+
+.ribbon .rb-btn-group {
+    display: inline-block;
+}

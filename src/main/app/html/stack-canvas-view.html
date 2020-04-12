@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161014564-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-161014564-1');
+    </script>
+
+
+
+  <meta charset="UTF-8">
+  <title>Octopus Organizer</title>
+
+  <link rel="stylesheet" type="text/css" href="../../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" type="text/css" href="./css/commons.css">
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.overwrites.css">
+  <link rel="stylesheet" type="text/css" href="./css/riboon.css">
+  <link rel="stylesheet" type="text/css" href="./css/stack-canvas-view.layout.css">
+  <link rel="stylesheet" type="text/css" href="./css/spinner.css">
+
+
+  <script src="../../../../node_modules/vue/dist/vue.min.js"></script>
+
+</head>
+<body>    
+
+    <div id="drag-file">
+        <i class="fas fa-file-upload"></i>
+        <p>Add files to the catalog.</p>
+    </div>    
+
+    <div id="toolbar-app">
+        <nav id="ribbon-bar" class="ribbon container-fluid">
+            <div class="row">
+                <section class="col-auto"> 
+                    <div class="row">
+                        <div class="col-auto">
+                            <div class="rb-btn lg" id="btn-tag-selected">  
+                                 <i class="fas fa-plus"></i>                
+                                 Add Tag
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="rb-btn lg" id="btn-tag">  
+                                 <i class="fas fa-hashtag"></i>                
+                                 Filter Tag
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="rb-btn lg" v-on:click="selectCommand(1008)">  
+                                 <i class="fas fa-paperclip"></i>                
+                                 Stack
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="rb-btn sm" v-on:click="simpleEmit('unstack-selected')">
+                                 <i class="fas fa-paperclip"></i>                
+                                 Unstack
+                            </div>
+                            <div class="rb-btn sm" v-on:click="selectCommand(1007)">                
+                                 <i class="fas fa-edit"></i>                
+                                 Rename
+                            </div>
+                            <div class="rb-btn sm" v-on:click="simpleEmit('remove-selected')">                
+                                 <i class="fas fa-trash"></i>                
+                                 Remove
+                            </div>
+                        </div>
+                    </div>
+                    <div class="label">Organize</div>
+                </section>  
+                <section class="col-auto"> 
+                    <div class="row">                        
+                        <div class="col-auto">
+                            <div class="rb-btn sm"  v-on:click="selectCommand(1004)">
+                                <i class="fas fa-code"></i>                
+                                Select by Pattern
+                           </div>
+                            <div class="rb-btn sm"  v-on:click="simpleEmit('select-by-pattern', '.*')">
+                                 <i class="fas fa-highlighter"></i>                
+                                 Select All
+                            </div>    
+                            <div class="rb-btn sm blind">&nbsp;</div>                        
+                        </div>                    
+                    </div>
+                    <div class="label">Navigate</div>
+                </section>   
+                <section class="col-auto"> 
+                    <div class="row">                        
+                        <div class="col-auto">
+                            <div class="rb-btn sm"  v-on:click="simpleEmit('display-sidebar')"  v-bind:class="{ active : visuals.sidebar }">
+                                Toggle Sidebar
+                           </div>
+                            <div class="rb-btn sm"  v-on:click="simpleEmit('display-preview')" v-bind:class="{ active : visuals.preview }">
+                                 Toggle Preview Area
+                            </div>
+                            <div class="rb-btn sm blind">&nbsp;</div>
+                        </div>                    
+                    </div>
+                    <div class="label">Display</div>
+                </section>                    
+            </div>
+        </nav>
+
+        <div id="toolbar">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fas" v-bind:class="getIndicatorClass()"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="commander" v-model="command" v-on:keyup.enter="fireCommand()" v-on:keyup.tab="if (matchingCommands.length > 0) { selectCommand(matchingCommands[0].id) } else if (matchingTags.length > 0) { selectCommand(1006, matchingTags[0]) }">                            
+                        </div>
+                        
+                    </div>
+                    <div class="col-auto">                                                
+                        <div class="btn" id="btn-imenu"><i class="fas fa-lightbulb"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div id="imenu">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- COMMANDER HINTS -->
+                        <div class="col-9" id="quick-doc">
+                            <ul id="command-doc">
+                                <li v-for="command in matchingCommands" v-on:click='selectCommand(command.id)' class="command-documentation">
+                                    <div class="row">
+                                        <div class="col-md title"><i class="fas fa-terminal"></i> {{ command.title }}</div>
+                                        <div class="col-auto syntax"><span class="label"></span> <span class="code">{{ command.syntax }}</span></div>
+                                    </div>                                                                              
+                                </li>
+                                <li v-for="tag in matchingTags" class="tag-documentation" v-on:click="fillCommander('#', tag, '')">    
+                                    <div class="row">
+                                        <div class="col-md title"><i class="fas fa-hashtag"></i> {{ tag }}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col description"> {{ command.description }}</div>
+                                    </div>
+                                </li>
+                            </ul>     
+                            <div class="no-maching-command" v-if="matchingCommands.length == 0">No matching command. Hit [Enter] to perform Search.</div>
+                        </div>
+
+                        <!-- MENU ITEMS -->
+                        <div class="col-3">
+                            <ul>
+                                <li class="imenu-button" v-on:click="simpleEmit('stack-selected')"><i class="fas fa-paperclip"></i>Stack Files</li>
+                                <li class="imenu-button" v-on:click="simpleEmit('select-by-pattern', '.*')"><i class="fas fa-highlighter"></i>Select all Files</li>
+                                <li class="imenu-button" v-on:click="simpleEmit('remove-selected')"><i class="fas fa-trash"></i>Remove Files</li>
+                                <li class="imenu-button" v-on:click="selectCommand(1007)"><i class="fas fa-edit"></i>Rename File</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="catalog-app">
+        <div id="sidebar" v-if="visuals.sidebar">            
+            <ul class="nav-block">
+                <li v-on:click="simpleEmit('clear-filters')"><i class="fas fa-stream"></i> All Files</li>
+            </ul>
+            <div class="nav-block-header" v-if="filterPattern != '.*'"><i class="fas fa-search"></i> {{ filterPattern }}</div>            
+            
+            <!--<div class="nav-block-header">Favorites</div>
+            <ul class="nav-block">
+                <li><i class="fas fa-star"></i> Favorite Stack</li>                
+            </ul>-->
+            <div class="nav-block-header">Tags</div>
+            <ul class="nav-block">
+                <li v-for="tag in tags() " v-on:click="simpleEmit('select-tags', [ tag ])" v-bind:class="{ active: checkTagSelected(tag) }"><i class="fas fa-hashtag"></i> {{ tag }} <span class="badge float-right badge-light">{{ files.filter(f => f.tags.includes(tag)).length }}</span></li>                
+            </ul>
+
+            <div class="nav-block-header">File Types</div>
+            <ul class="nav-block">
+                <li v-on:click="simpleEmit('select-type-categories', [ 'stack' ])" v-bind:class="{ active : checkTypeCategorySelected('stack') }"><i class="fas fa-paperclip"></i> Stack <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'stack').length }}</span></li>                
+                <li v-on:click="simpleEmit('select-type-categories', [ 'word-document' ])" v-bind:class="{ active : checkTypeCategorySelected('word-document') }"><i class="fas fa-file-alt"></i> Word <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'word-document').length }}</span></li>                
+                <li v-on:click="simpleEmit('select-type-categories', [ 'pdf-document' ])" v-bind:class="{ active : checkTypeCategorySelected('pdf-document') }"><i class="fas fa-file-pdf"></i> PDF <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'pdf-document').length }}</span></li>
+                <li v-on:click="simpleEmit('select-type-categories', [ 'excel-document' ])" v-bind:class="{ active : checkTypeCategorySelected('excel-document') }"><i class="fas fa-file-excel"></i> Excel <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'excel-document').length }}</span></li>
+                <li v-on:click="simpleEmit('select-type-categories', [ 'powerpoint-document' ])" v-bind:class="{ active : checkTypeCategorySelected('powerpoint-document') }"><i class="fas fa-file-powerpoint"></i> PowerPoint <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'powerpoint-document').length }}</span></li>
+                <li v-on:click="simpleEmit('select-type-categories', [ 'image' ])" v-bind:class="{ active : checkTypeCategorySelected('image') }"><i class="fas fa-image"></i> Image <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'image').length }}</span></li>                                
+                <li v-on:click="simpleEmit('select-type-categories', [ 'archive' ])" v-bind:class="{ active : checkTypeCategorySelected('archive') }"><i class="fas fa-file-archive"></i> Archive <span class="badge float-right badge-light">{{ files.filter(f => f.typeCategory == 'archive').length }}</span></li>
+            </ul>
+        </div>
+
+        <div id="file-list" v-bind:class="{ 'fill-right' : !visuals.preview, 'fill-left' : !visuals.sidebar } ">
+            <div class="container-fluid">
+                <div class="file-item"  v-for="file in filteredFiles" v-bind:class="{ selected: file.isSelected }" v-on:click.shift="toggleSelection(file.id, true)" v-on:click.exact="toggleSelection(file.id, false)" v-on:dblclick="openFile(file);">
+                    <div class="row">
+                        <div class="col-auto file-type-indicator">                            
+                            <i class="fas" v-bind:class="getIndicatorClass(file.typeCategory)"></i>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    {{ file.title }}
+                                </div>
+                            </div>  
+                            <div class="row file-detail">
+                                <div class="col-auto">
+                                    <ul class="tag-list">
+                                        <li v-for="tag in file.tags"><i class="fas fa-hashtag"></i> {{ tag }}</li>
+                                    </ul>
+                                </div>                        
+                                <div class="col"></div>                                
+                                <div class="col-2 text-right" v-if="file.role == 'file'">{{ moment(file.stats.mtime).fromNow() }}</div>
+                                <div class="col-2 text-right" v-if="file.role == 'file'">{{ Math.round(file.stats.size / 1024 / 1024 * 100) / 100 + ' MB' }}</div>
+                                <div class="col-2 text-right" v-if="file.role == 'stack'">{{ file.files.length + ' Files' }}</div>
+                            </div>                            
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <div id="overlay-canvas" v-if="selectedFile != undefined && visuals.preview">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="preview-layer">
+                        <img v-bind:src="selectedFile.path" class="preview" v-if="selectedFile.typeCategory == 'image'">
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col title">{{ selectedFile.title }}</div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ul class="tags">
+                        <li v-for="tag in selectedFile.tags"><i class="fas fa-hashtag"></i> {{ tag }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="detail">
+                <div class="row" v-if="selectedFile.role == 'file'">
+                    <div class="col path">{{ selectedFile.path }}</div>                    
+                </div>
+                <div class="row" v-if="selectedFile.role == 'stack'">
+                    <div class="col path">{{ selectedFile.files.length }} Files</div>                    
+                </div>
+                <div class="row" v-if="selectedFile.role == 'file'">
+                    <div class="col-3 label">Size</div>
+                    <div class="col">{{ Math.round(selectedFile.stats.size / 1024 / 1024 * 100) / 100  }} MB</div>
+                </div>
+                <div class="row" v-if="selectedFile.role == 'file'">
+                    <div class="col-3 label">Created</div>
+                    <div class="col">{{ moment(selectedFile.stats.ctime).format('dddd, DD.MM.YYYY HH:mm:ss') }}</div>
+                </div>
+                <div class="row" v-if="selectedFile.role == 'file'">
+                    <div class="col-3 label">Modified</div>
+                    <div class="col">{{ moment(selectedFile.stats.mtime).format('dddd, DD.MM.YYYY HH:mm:ss') }}</div>
+                </div>
+            </div>     
+            <div class="stacked-files">
+                <div class="container-fluid">
+                    <div class="row" >
+                        <div v-for="stackedFile in selectedFile.files" class="col-4 file-item" v-on:dblclick="openFile(stackedFile)">
+                            <img v-bind:src="stackedFile.path" class="thumbnail" v-if="stackedFile.typeCategory == 'image'">
+                            <i class="fas" v-bind:class="getIndicatorClass(stackedFile.typeCategory)" v-if="stackedFile.typeCategory != 'image'"></i>
+                            <div class="title">{{ stackedFile.title }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <div id="loading-screen" class="full-screen text-center">
+        <div class="center">
+            <img src="../../../../octopus-icon.png" class="octopus-icon">
+            <p>We are preparing your Files ...</p>
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT IMPORTS -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>    
+    <script src="../../../../node_modules/jquery/dist/jquery.min.js"></script>    
+    <script src="../../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="../../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../../node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script src="./js/events.js"></script>    
+    <script src="./js/stack-canvas-view.uxevents.js"></script>        
+    <script src="./js/dragdrop.js"></script>   
+    <script src="./js/toolbar-app.js"></script>     
+    <script src="./js/catalog-app.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+</body>
+</html>

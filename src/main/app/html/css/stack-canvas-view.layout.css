@@ -1,0 +1,325 @@
+/**
+* stack-canvas-view.layout.js
+* ---------------------------
+* This file contains basic styling information of the Stack Canvas View.
+* 
+* AUTHOR: Lennard Scheffler
+*/
+
+#drag-file {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px 80px;
+    text-align: center;
+    border: dashed 1px #999;
+    background-color: #fff;
+    border-radius: 4px;     
+    color: #999;
+    display: none;
+}
+
+#drag-file i {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+
+/* SIDEBAR */
+/* ======= */
+
+#sidebar {
+    position: absolute;
+    top: 175px;
+    left: 0;
+    width: 20%;         
+    bottom: 0;
+    overflow-y: auto; 
+    border-right: solid 1px #ddd;
+}
+
+#sidebar .nav-block {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar .nav-block li {
+    padding: 5px 20px;
+    cursor: default;
+}
+
+#sidebar .nav-block li.active {
+    background-color: var(--list-low);    
+}
+
+#sidebar .nav-block li:hover {
+    background-color: var(--list-low);    
+}
+
+#sidebar .nav-block li i {
+    font-size: 10pt;
+    margin-right: 10px;    
+}
+
+#sidebar .nav-block-header {
+    padding: 20px 20px 0px 20px;
+}
+
+/* RIBBON-BAR */
+/* ========== */
+
+#ribbon-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/* TOOLBAR */
+/* ======= */
+
+#toolbar {
+    position: absolute;
+    top: 110px;
+    left: 0;
+    right: 0;
+    padding-top: 10px;
+    border-bottom: solid #ddd 1px;
+}
+
+
+/* FILE-LIST */
+/* ========= */
+
+#file-list {    
+    position: absolute;
+    top: 175px;
+    left: 20%;
+    right: 30%;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+#file-list.fill-right {
+    right: 0;
+}
+
+#file-list.fill-left {
+    left: 0;
+}
+
+#file-list .file-item {
+    padding: 10px 25px;
+    cursor: default;
+}
+
+#file-list .file-item:hover {
+    background-color: var(--list-low);
+}
+
+#file-list .file-item.selected {
+    background-color: var(--list-accent-low);
+}
+
+#file-list .file-item .file-type-indicator {
+    font-size: 30px;            
+    padding-right: 0;
+    color: #aaa;
+}
+
+#file-list .file-item.selected .file-type-indicator {    
+    color: var(--base-high);
+}
+
+#file-list .file-item .file-detail {
+    font-size: 10pt;
+    color: #555;
+}
+
+#file-list .file-item .tag-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#file-list .file-item .tag-list li {
+    display: inline-block;
+    padding: 3px;
+}
+
+#file-list .file-item .tag-list li i {
+    font-size: 8pt;    
+}
+
+/* QUICKDOC */
+/* ======== */
+
+#imenu {
+    position: absolute;    
+    left: 0;
+    right: 0;
+    top: 50px;
+    z-index: 99;
+    background-color: #fff;  
+    box-shadow: 0px 3px 3px #999;    
+    display: none;
+}
+
+#quick-doc {
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+#imenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#imenu .command-documentation, #imenu .tag-documentation {
+    padding: 10px;
+    border-bottom: solid 1px var(--list-low);
+    cursor: pointer;
+}
+
+#imenu .command-documentation:hover, #imenu .tag-documentation:hover {
+    background-color: var(--list-low);
+}
+
+#imenu .title {
+    font-weight: bold;
+}
+
+#imenu .code {
+    background-color: var(--list-medium);
+    border-radius: 3px;
+    padding: 3px 5px;    
+    font-size: 12px;
+}
+
+#imenu .no-maching-command {
+    padding: 15px;
+    font-style: italic;
+    color: var(-list-medium);
+}
+
+#imenu .description {
+    padding-top: 5px;
+    font-size: 12px;
+}
+
+#imenu .imenu-button {
+    padding: 7px;
+    cursor: pointer;
+}
+
+#imenu .imenu-button:hover {
+    background-color: var(--list-low);    
+}
+
+#imenu .imenu-button i {
+    margin-right: 10px;
+}
+
+/* LOADING SCREEN */
+/* ============== */
+
+#loading-screen {
+    z-index: 1000;
+    background-color: #fff;
+    font-size: 16pt;
+    color: #666;
+}  
+
+#loading-screen .octopus-icon {
+    height: 175px;
+    margin-bottom: 20px;
+}
+
+
+/* OVERLAY CANVAS */
+/* ============== */
+
+#overlay-canvas {
+    position: absolute;
+    top: 175px;
+    bottom: 0;
+    right: 0px;
+    width: 30%;
+    background-color: #fff;
+    border-left: solid 1px #ddd;
+}
+
+#overlay-canvas .preview-layer {
+    padding: 25px;    
+}
+
+#overlay-canvas .preview {
+    max-width: 100%;  
+    max-height: 300px;   
+}
+
+#overlay-canvas .title {
+    font-weight: bold;
+    text-align: center;
+    margin: 5px 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}
+
+#overlay-canvas .path {
+    font-size: 10px;
+    text-align: center;    
+    margin-bottom: 20px;
+}
+
+#overlay-canvas .detail {
+    padding: 5px 25px;
+}
+
+#overlay-canvas .tags {
+    list-style: none;
+    margin: 10px 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+#overlay-canvas .tags li {
+    display: inline-block;
+    padding: 3px 10px;
+}
+
+#overlay-canvas .label {
+    text-align: right;
+    font-size: 10px;
+    font-weight: 900;
+    padding-top: 5px;
+}
+
+#overlay-canvas .stacked-files .file-item {
+    padding: 5px;
+    text-align:center;
+}
+
+#overlay-canvas .stacked-files .file-item:hover {
+    background-color: var(--list-low);
+}
+
+#overlay-canvas .stacked-files .file-item .title {
+    font-size: 10px;
+    font-weight: 900;
+}
+
+#overlay-canvas .stacked-files .file-item .thumbnail {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+#overlay-canvas .stacked-files .file-item i {
+    font-size: 50px;
+    margin: 25px;
+    color: #aaa;
+}
