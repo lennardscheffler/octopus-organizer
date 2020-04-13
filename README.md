@@ -6,6 +6,13 @@ A modern an intuitive File and Document Manager.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
+### Download
+
+**Current Version**
+[Windows, 64 Bit - octopus-organizer-2020.2-windows-x64.zip](https://www.dropbox.com/s/504z2vv54ponzn7/octopus-organizer-2020.2-windows-x64.zip?dl=1)
+[MacOS, 64 Bit - octopus-organizer-2020.2-macos-x64.zip](https://www.dropbox.com/s/e35j9qz52sgf1zr/octopus-organizer-2020.2-macos-x64.zip?dl=1)
+
+
 ### Installing
 
 Clone Project from Repository.
