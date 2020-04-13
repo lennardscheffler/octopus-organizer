@@ -8,9 +8,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Download
 
-**Current Version**
-[Windows, 64 Bit - octopus-organizer-2020.2-windows-x64.zip](https://www.dropbox.com/s/504z2vv54ponzn7/octopus-organizer-2020.2-windows-x64.zip?dl=1)
-[MacOS, 64 Bit - octopus-organizer-2020.2-macos-x64.zip](https://www.dropbox.com/s/e35j9qz52sgf1zr/octopus-organizer-2020.2-macos-x64.zip?dl=1)
+Windows, 64 Bit: [octopus-organizer-2020.2-windows-x64.zip](https://www.dropbox.com/s/504z2vv54ponzn7/octopus-organizer-2020.2-windows-x64.zip?dl=1)
+
+MacOS, 64 Bit: [octopus-organizer-2020.2-macos-x64.zip](https://www.dropbox.com/s/e35j9qz52sgf1zr/octopus-organizer-2020.2-macos-x64.zip?dl=1)
 
 
 ### Installing
