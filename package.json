@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@popperjs/core": "^2.1.1",
     "bootstrap": "^4.4.1",    
-    "jquery": "^3.4.1",    
+    "jquery": "^3.5.0",    
     "moment": "^2.24.0",
     "node-storage": "0.0.9",
     "universal-analytics": "^0.4.20",
